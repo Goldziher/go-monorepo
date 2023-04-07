@@ -1,0 +1,12 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="go test github.com/Goldziher/go-monorepo/lib/logging" type="GoTestRunConfiguration" factoryName="Go Test">
+    <module name="go-monorepo" />
+    <working_directory value="$PROJECT_DIR$/lib/logging" />
+    <kind value="PACKAGE" />
+    <package value="github.com/Goldziher/go-monorepo/lib/logging" />
+    <directory value="$PROJECT_DIR$" />
+    <filePath value="$PROJECT_DIR$" />
+    <framework value="gotest" />
+    <method v="2" />
+  </configuration>
+</component>

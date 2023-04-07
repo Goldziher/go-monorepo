@@ -1,0 +1,9 @@
+version: "3.9"
+
+services:
+  auth:
+    build:
+      dockerfile: Dockerfile
+      context: .
+      args:
+        BUILD_TARGET: auth
