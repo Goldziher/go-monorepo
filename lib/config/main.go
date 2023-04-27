@@ -8,8 +8,8 @@ import (
 )
 
 type Config struct {
-	Port  int  `env:"PORT"`
-	Debug bool `env:"DEBUG,default=false"`
+	Port        int    `env:"PORT"`
+	Environment string `env:"ENVIRONMENT"`
 }
 
 var (

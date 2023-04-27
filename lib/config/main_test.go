@@ -2,7 +2,6 @@ package config_test
 
 import (
 	"context"
-	"os"
 	"testing"
 
 	"github.com/Goldziher/go-monorepo/lib/config"
@@ -11,10 +10,12 @@ import (
 
 func TestConfigParse(t *testing.T) {
 	t.Run("successfully parses config", func(t *testing.T) {
-		_ = os.Setenv("PORT", "3000")
+		t.Setenv("PORT", "3000")
+		t.Setenv("ENVIRONMENT", "development")
 
 		cfg, err := config.Parse(context.TODO())
 		assert.Nil(t, err)
 		assert.Equal(t, cfg.Port, 3000)
+		assert.Equal(t, cfg.Environment, "development")
 	})
 }

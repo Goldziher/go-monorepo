@@ -7,3 +7,5 @@ services:
       context: .
       args:
         BUILD_TARGET: auth
+    environment:
+      ENVIRONMENT: development

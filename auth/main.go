@@ -34,7 +34,7 @@ func main() {
 		log.Fatal().Err(configParseErr).Msg("failed to parse config, terminating")
 	}
 
-	logging.Configure(cfg.Debug)
+	logging.Configure(cfg.Environment != "production")
 
 	mux := router.Create("auth-service")
 
