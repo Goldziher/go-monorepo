@@ -39,7 +39,7 @@ func InitOAuth(w http.ResponseWriter, r *http.Request) {
 		log.Error().Err(stateErr).Msg("failed generating random state")
 	}
 
-	w.WriteHeader(200)
+	render.Status(r, http.StatusOK)
 	render.JSON(w, r, OAuthInitResponseBody{RedirectUrl: conf.AuthCodeURL(state)})
 }
 

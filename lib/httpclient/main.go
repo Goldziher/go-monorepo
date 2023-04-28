@@ -2,6 +2,7 @@ package httpclient
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -33,7 +34,7 @@ func New(baseUrl string,
 	return Client{BaseUrl: baseUrl, HttpClient: &http.Client{Timeout: time.Duration(1) * time.Second}}
 }
 
-func (client *Client) Request(method string, path string, body interface{}, headers ...HTTPHeader) (*HTTPResponse, error) {
+func (client *Client) Request(ctx context.Context, method string, path string, body any, headers ...HTTPHeader) (*HTTPResponse, error) {
 	var requestBody io.Reader
 	if body != nil {
 		data, _ := json.Marshal(body)
@@ -42,7 +43,7 @@ func (client *Client) Request(method string, path string, body interface{}, head
 
 	url := fmt.Sprintf("%s%s", client.BaseUrl, path)
 
-	request, requestErr := http.NewRequest(method, url, requestBody)
+	request, requestErr := http.NewRequestWithContext(ctx, method, url, requestBody)
 	if requestErr != nil {
 		return nil, requestErr
 	}
@@ -70,18 +71,22 @@ func (client *Client) Request(method string, path string, body interface{}, head
 	return &HTTPResponse{Body: data, StatusCode: response.StatusCode, Status: response.Status}, nil
 }
 
-func (client *Client) Get(path string, headers ...HTTPHeader) (*HTTPResponse, error) {
-	return client.Request("GET", path, nil, headers...)
+func (client *Client) Get(ctx context.Context, path string, headers ...HTTPHeader) (*HTTPResponse, error) {
+	return client.Request(ctx, http.MethodGet, path, nil, headers...)
 }
 
-func (client *Client) Post(path string, body interface{}, headers ...HTTPHeader) (*HTTPResponse, error) {
-	return client.Request("POST", path, body, headers...)
+func (client *Client) Delete(ctx context.Context, path string, headers ...HTTPHeader) (*HTTPResponse, error) {
+	return client.Request(ctx, http.MethodDelete, path, nil, headers...)
 }
 
-func (client *Client) Put(path string, body interface{}, headers ...HTTPHeader) (*HTTPResponse, error) {
-	return client.Request("PUT", path, body, headers...)
+func (client *Client) Post(ctx context.Context, path string, body any, headers ...HTTPHeader) (*HTTPResponse, error) {
+	return client.Request(ctx, http.MethodPost, path, body, headers...)
 }
 
-func (client *Client) Patch(path string, body interface{}, headers ...HTTPHeader) (*HTTPResponse, error) {
-	return client.Request("Patch", path, body, headers...)
+func (client *Client) Put(ctx context.Context, path string, body any, headers ...HTTPHeader) (*HTTPResponse, error) {
+	return client.Request(ctx, http.MethodPut, path, body, headers...)
+}
+
+func (client *Client) Patch(ctx context.Context, path string, body any, headers ...HTTPHeader) (*HTTPResponse, error) {
+	return client.Request(ctx, http.MethodPatch, path, body, headers...)
 }

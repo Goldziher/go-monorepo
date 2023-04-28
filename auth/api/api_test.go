@@ -2,6 +2,7 @@ package api_test
 
 import (
 	"encoding/json"
+	"net/http"
 	"strings"
 	"testing"
 
@@ -24,7 +25,7 @@ func TestInitOAuth(t *testing.T) {
 	url := strings.ReplaceAll(api.InitAuthPath, "{provider}", "github")
 	res, err := client.Get(url)
 	assert.Nil(t, err)
-	assert.Equal(t, res.StatusCode, 200)
+	assert.Equal(t, res.StatusCode, http.StatusOK)
 
 	body := api.OAuthInitResponseBody{}
 
