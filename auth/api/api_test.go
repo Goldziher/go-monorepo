@@ -1,6 +1,7 @@
 package api_test
 
 import (
+	"context"
 	"encoding/json"
 	"net/http"
 	"strings"
@@ -23,7 +24,7 @@ func createClient(t *testing.T) httpclient.Client {
 func TestInitOAuth(t *testing.T) {
 	client := createClient(t)
 	url := strings.ReplaceAll(api.InitAuthPath, "{provider}", "github")
-	res, err := client.Get(url)
+	res, err := client.Get(context.TODO(), url)
 	assert.Nil(t, err)
 	assert.Equal(t, res.StatusCode, http.StatusOK)
 

@@ -1,8 +1,13 @@
 package github
 
 import (
+	"context"
 	"fmt"
-	"os"
+	"github.com/Goldziher/go-monorepo/auth/config"
+	"github.com/Goldziher/go-monorepo/auth/providers"
+	"github.com/Goldziher/go-monorepo/auth/types"
+	"github.com/Goldziher/go-monorepo/lib/apiutils"
+	"github.com/rs/zerolog/log"
 	"sync"
 
 	"golang.org/x/oauth2"
@@ -14,12 +19,32 @@ var (
 	github *oauth2.Config
 )
 
-func GetConfig() *oauth2.Config {
+const (
+	UserProfileURL = "https://api.github.com/user"
+)
+
+type GithubUserData struct {
+	ID        int    `json:"id"`
+	Email     string `json:"email"`
+	Bio       string `json:"bio"`
+	Name      string `json:"name"`
+	Login     string `json:"login"`
+	AvatarUrl string `json:"avatar_url"`
+	Location  string `json:"location"`
+	Company   string `json:"company"`
+}
+
+func GetConfig(ctx context.Context) (*oauth2.Config, error) {
+	cfg, err := config.Get(ctx)
+	if err != nil {
+		return nil, err
+	}
+
 	once.Do(func() {
 		github = &oauth2.Config{
-			ClientID:     os.Getenv("GITHUB_CLIENT_ID"),
-			ClientSecret: os.Getenv("GITHUB_CLIENT_SECRET"),
-			RedirectURL:  fmt.Sprintf("%s/oauth/github/redirect", os.Getenv("BASE_URL")),
+			ClientID:     cfg.GithubClientId,
+			ClientSecret: cfg.GithubClientSecret,
+			RedirectURL:  fmt.Sprintf("%s/oauth/github/callback", cfg.BaseUrl),
 			Scopes:       []string{"read:user", "user:email"},
 			Endpoint: oauth2.Endpoint{
 				AuthURL:  endpoints.GitHub.AuthURL,
@@ -27,5 +52,33 @@ func GetConfig() *oauth2.Config {
 			},
 		}
 	})
-	return github
+	return github, nil
+}
+
+func GetUserData(ctx context.Context, token *oauth2.Token) (*types.UserData, error) {
+	client := github.Client(ctx, token)
+
+	response, requestErr := client.Get(UserProfileURL)
+	if requestErr != nil {
+		return nil, requestErr
+	}
+
+	githubUserData := GithubUserData{}
+	deserializationError := apiutils.DeserializeJson(response, &githubUserData)
+	if deserializationError != nil {
+		return nil, deserializationError
+	}
+	log.Debug().Interface("github user data", githubUserData).Msg("user data received from github")
+
+	return &types.UserData{
+		Provider:          providers.ProviderGithub,
+		ProviderID:        githubUserData.ID,
+		Email:             githubUserData.Email,
+		Bio:               githubUserData.Bio,
+		FullName:          githubUserData.Name,
+		Username:          githubUserData.Login,
+		ProfilePictureUrl: githubUserData.AvatarUrl,
+		Location:          githubUserData.Location,
+		Company:           githubUserData.Company,
+	}, nil
 }

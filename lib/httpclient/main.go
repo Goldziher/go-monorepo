@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/Goldziher/go-monorepo/lib/apiutils"
 	"io"
 	"net/http"
 	"time"
@@ -59,13 +60,9 @@ func (client *Client) Request(ctx context.Context, method string, path string, b
 		return nil, responseErr
 	}
 
-	defer func() {
-		_ = response.Body.Close()
-	}()
-
-	data, readErr := io.ReadAll(response.Body)
-	if readErr != nil {
-		return nil, readErr
+	data, readResponseErr := apiutils.ReadResponseBody(response)
+	if readResponseErr != nil {
+		return nil, readResponseErr
 	}
 
 	return &HTTPResponse{Body: data, StatusCode: response.StatusCode, Status: response.Status}, nil

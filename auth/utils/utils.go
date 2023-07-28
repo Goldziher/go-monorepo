@@ -3,19 +3,11 @@ package utils
 import (
 	"crypto/rand"
 	"encoding/base64"
-	"math/big"
+	"io"
 )
 
-func CreateState() (string, error) {
-	const letters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-"
-	ret := make([]byte, 15)
-	for i := 0; i < 15; i++ {
-		num, err := rand.Int(rand.Reader, big.NewInt(int64(len(letters))))
-		if err != nil {
-			return "", err
-		}
-		ret[i] = letters[num.Int64()]
-	}
-
-	return base64.URLEncoding.EncodeToString(ret), nil
+func CreateStateString() string {
+	nonce := make([]byte, 64)
+	_, _ = io.ReadFull(rand.Reader, nonce)
+	return base64.URLEncoding.EncodeToString(nonce)
 }

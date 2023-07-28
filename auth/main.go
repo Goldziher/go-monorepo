@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"github.com/Goldziher/go-monorepo/auth/config"
 	"net/http"
 	"os"
 	"os/signal"
@@ -10,7 +11,6 @@ import (
 
 	"github.com/Goldziher/go-monorepo/auth/api"
 
-	"github.com/Goldziher/go-monorepo/lib/config"
 	"github.com/Goldziher/go-monorepo/lib/logging"
 	"github.com/Goldziher/go-monorepo/lib/router"
 	"github.com/rs/zerolog/log"
@@ -28,7 +28,7 @@ func main() {
 		cancel()
 	}()
 
-	cfg, configParseErr := config.Parse(ctx)
+	cfg, configParseErr := config.Get(ctx)
 
 	if configParseErr != nil {
 		log.Fatal().Err(configParseErr).Msg("failed to parse config, terminating")
