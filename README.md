@@ -1,8 +1,17 @@
-# go-monorepo
+# Golang Monorepo
 
-This repository is an example monorepo using go lang.
+This repository is an example monorepo using golang.
 
-## setup
+Notes:
+
+- Due to the limitations of the go module system, we use a single `go.mod` file at the root level. 
+- We use `lib` instead of `pkg` because the modules under `lib` are meant for direction consumption in the services.
+
+## Stack
+
+This repository uses [go-chi](https://github.com/go-chi/chi) as a router. I prefer keeping stuff simple and close to the metal. 
+
+## Setup
 
 ### pre-commit
 
@@ -15,3 +24,9 @@ We use pre-commit to orchestrate linting.
 
 - `pre-commit autoupdate` to update the hooks
 - `pre-commit run --all-files` to execute against all files
+
+### Docker
+
+There is a `dockerfile` in the repository root which uses `distroless` as the production image. Use docker compose for local development:
+
+- `docker compose up --build`
