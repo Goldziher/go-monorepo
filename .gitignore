@@ -6,5 +6,5 @@
 *.so
 *.test
 .env
-.idea/sonarlint/*
+.idea
 go.work
