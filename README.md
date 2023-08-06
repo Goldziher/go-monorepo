@@ -9,7 +9,8 @@ Notes:
 
 ## Stack
 
-This repository uses [go-chi](https://github.com/go-chi/chi) as a router. I prefer keeping stuff simple and close to the metal.
+This repository uses [go-chi](https://github.com/go-chi/chi) as a router, it uses [sqlc](https://sqlc.dev/) for the DAL and PGX as the DB driver
+for Postgres.
 
 ## Setup
 
@@ -30,3 +31,8 @@ We use pre-commit to orchestrate linting.
 There is a `dockerfile` in the repository root which uses `distroless` as the production image. Use docker compose for local development:
 
 - `docker compose up --build`
+
+### SQLC
+
+1. [sqlc](https://sqlc.dev/).
+2. run `sqlc generate` or any of the other commands in the root.

@@ -5,6 +5,22 @@ services:
     image: redis:latest
     ports:
       - "6379:6379"
+  db:
+    image: postgres:latest
+    volumes:
+      - db:/var/lib/postrgresql/data/
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: monorepo
+      POSTGRES_DB: monorepo
+      POSTGRES_USER: monorepo
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U monorepo"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
   auth:
     build:
       dockerfile: Dockerfile
@@ -20,3 +36,7 @@ services:
       ENVIRONMENT: development
       BASE_URL: http://localhost:3000
       REDIS_CONNECTION_STRING: redis://redis:6379
+      DATABASE_URL: postgresql://monorepo:monorepo@db:5432/monorepo
+
+volumes:
+  db:
