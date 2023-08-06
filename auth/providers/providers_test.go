@@ -2,6 +2,7 @@ package providers_test
 
 import (
 	"context"
+	"github.com/Goldziher/go-monorepo/auth/constants"
 	"github.com/Goldziher/go-monorepo/auth/providers"
 	"github.com/stretchr/testify/assert"
 	"testing"
@@ -13,19 +14,19 @@ func TestGetProvider(t *testing.T) {
 		ExpectError bool
 	}{
 		{
-			providers.ProviderGithub,
+			constants.ProviderGithub,
 			false,
 		},
 		{
-			providers.ProviderGitlab,
+			constants.ProviderGitlab,
 			true,
 		},
 		{
-			providers.ProviderBitBucket,
+			constants.ProviderBitBucket,
 			true,
 		},
 		{
-			providers.ProviderGoogle,
+			constants.ProviderGoogle,
 			true,
 		},
 		{
