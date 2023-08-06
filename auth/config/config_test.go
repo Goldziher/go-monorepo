@@ -16,6 +16,8 @@ func TestConfigGet(t *testing.T) {
 		t.Setenv("BASE_URL", "http://localhost")
 		t.Setenv("GITHUB_CLIENT_ID", "githubClientId")
 		t.Setenv("GITHUB_CLIENT_SECRET", "githubClientSecret")
+		t.Setenv("GOOGLE_CLIENT_ID", "googleClientId")
+		t.Setenv("GOOGLE_CLIENT_SECRET", "googleClientSecret")
 
 		cfg, err := config.Get(context.TODO())
 		assert.Nil(t, err)
@@ -24,5 +26,7 @@ func TestConfigGet(t *testing.T) {
 		assert.Equal(t, cfg.BaseUrl, "http://localhost")
 		assert.Equal(t, cfg.GithubClientId, "githubClientId")
 		assert.Equal(t, cfg.GithubClientSecret, "githubClientSecret")
+		assert.Equal(t, cfg.GoogleClientId, "googleClientId")
+		assert.Equal(t, cfg.GoogleClientSecret, "googleClientSecret")
 	})
 }

@@ -13,6 +13,8 @@ type Config struct {
 	BaseUrl            string `env:"BASE_URL"`
 	GithubClientId     string `env:"GITHUB_CLIENT_ID"`
 	GithubClientSecret string `env:"GITHUB_CLIENT_SECRET"`
+	GoogleClientId     string `env:"GOOGLE_CLIENT_ID"`
+	GoogleClientSecret string `env:"GOOGLE_CLIENT_SECRET"`
 }
 
 var (
