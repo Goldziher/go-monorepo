@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/Goldziher/go-monorepo/auth/config"
-	"github.com/Goldziher/go-monorepo/auth/providers"
+	"github.com/Goldziher/go-monorepo/auth/constants"
 	"github.com/Goldziher/go-monorepo/auth/types"
 	"github.com/Goldziher/go-monorepo/lib/apiutils"
 	"github.com/rs/zerolog/log"
@@ -71,7 +71,7 @@ func GetUserData(ctx context.Context, token *oauth2.Token) (*types.UserData, err
 	log.Debug().Interface("github user data", githubUserData).Msg("user data received from github")
 
 	return &types.UserData{
-		Provider:          providers.ProviderGithub,
+		Provider:          constants.ProviderGithub,
 		ProviderID:        githubUserData.ID,
 		Email:             githubUserData.Email,
 		Bio:               githubUserData.Bio,
