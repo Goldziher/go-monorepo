@@ -1,8 +1,10 @@
 package constants
 
 const (
-	ProviderGithub    = "github"
-	ProviderGitlab    = "gitlab"
-	ProviderBitBucket = "bitbucket"
-	ProviderGoogle    = "google"
+	ProviderGithub = "github"
+	ProviderGoogle = "google"
+)
+
+const (
+	GrantTypePassword = "password"
 )

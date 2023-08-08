@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/Goldziher/go-monorepo/auth/config"
+	"github.com/Goldziher/go-monorepo/lib/database"
 	"net/http"
 	"os"
 	"os/signal"
@@ -19,6 +20,8 @@ import (
 
 func main() {
 	ctx, cancel := context.WithCancel(context.Background())
+
+	defer database.Close(ctx)
 
 	go func() {
 		c := make(chan os.Signal, 1)

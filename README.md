@@ -36,3 +36,8 @@ There is a `dockerfile` in the repository root which uses `distroless` as the pr
 
 1. [sqlc](https://sqlc.dev/).
 2. run `sqlc generate` or any of the other commands in the root.
+
+### Migrations
+In our case `<migration-dir>` is `migrations` folder
+1. run `migrate create -ext sql -dir <migration-dir> -seq <migration-name>` to generate migrations
+2. run `migrate -path <migration-dir> -database <DATABASE_URL> -verbose <up/down>` to apply migrations

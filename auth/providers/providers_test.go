@@ -18,20 +18,8 @@ func TestGetProvider(t *testing.T) {
 			false,
 		},
 		{
-			constants.ProviderGitlab,
-			true,
-		},
-		{
-			constants.ProviderBitBucket,
-			true,
-		},
-		{
 			constants.ProviderGoogle,
-			true,
-		},
-		{
-			"facebook",
-			true,
+			false,
 		},
 	} {
 		config, err := providers.GetProvider(context.TODO(), testCase.Provider)

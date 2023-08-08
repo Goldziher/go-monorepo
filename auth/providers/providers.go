@@ -16,11 +16,9 @@ func GetProvider(ctx context.Context, providerName string) (*oauth2.Config, erro
 		return github.GetConfig(ctx)
 	case constants.ProviderGoogle:
 		return google.GetConfig(ctx)
-	case constants.ProviderGitlab:
-	case constants.ProviderBitBucket:
-		return nil, fmt.Errorf(fmt.Sprintf("not implemented for provider %s", providerName))
+	default:
+		return nil, fmt.Errorf(fmt.Sprintf("unsupported provider %s", providerName))
 	}
-	return nil, fmt.Errorf(fmt.Sprintf("unsupported provider %s", providerName))
 }
 
 func GetUserData(ctx context.Context, token *oauth2.Token, providerName string) (*types.UserData, error) {
@@ -29,9 +27,7 @@ func GetUserData(ctx context.Context, token *oauth2.Token, providerName string) 
 		return github.GetUserData(ctx, token)
 	case constants.ProviderGoogle:
 		return google.GetUserData(ctx, token)
-	case constants.ProviderGitlab:
-	case constants.ProviderBitBucket:
-		return nil, fmt.Errorf(fmt.Sprintf("not implemented for provider %s", providerName))
+	default:
+		return nil, fmt.Errorf(fmt.Sprintf("unsupported provider %s", providerName))
 	}
-	return nil, fmt.Errorf(fmt.Sprintf("unsupported provider %s", providerName))
 }
