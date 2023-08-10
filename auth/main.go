@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/Goldziher/go-monorepo/auth/config"
-	"github.com/Goldziher/go-monorepo/lib/database"
+	"github.com/Goldziher/go-monorepo/db"
 	"net/http"
 	"os"
 	"os/signal"
@@ -21,8 +21,6 @@ import (
 func main() {
 	ctx, cancel := context.WithCancel(context.Background())
 
-	defer database.Close(ctx)
-
 	go func() {
 		c := make(chan os.Signal, 1)
 		signal.Notify(c, os.Interrupt, syscall.SIGTERM)
@@ -36,6 +34,11 @@ func main() {
 	if configParseErr != nil {
 		log.Fatal().Err(configParseErr).Msg("failed to parse config, terminating")
 	}
+
+	dbConn := db.CreateConnection(ctx, cfg.DatabaseUrl)
+	defer func() {
+		_ = dbConn.Close(ctx)
+	}()
 
 	logging.Configure(cfg.Environment != "production")
 

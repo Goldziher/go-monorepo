@@ -15,6 +15,7 @@ type Config struct {
 	GithubClientSecret string `env:"GITHUB_CLIENT_SECRET"`
 	GoogleClientId     string `env:"GOOGLE_CLIENT_ID"`
 	GoogleClientSecret string `env:"GOOGLE_CLIENT_SECRET"`
+	DatabaseUrl        string `env:"DATABASE_URL,required"`
 }
 
 var (

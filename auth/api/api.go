@@ -133,13 +133,17 @@ func InitGrantOAuth(w http.ResponseWriter, r *http.Request) {
 	if parseBodyErr := json.NewDecoder(r.Body).Decode(&user); parseBodyErr != nil {
 		log.Error().Err(parseBodyErr).Msg("failed to parse the request payload")
 		_ = render.Render(w, r, apiutils.BadRequest("invalid payload"))
+		return
 	}
 
 	hashedPassword, hashingErr := hashing.Hash(user.Password)
 	if hashingErr != nil {
 		log.Error().Err(hashingErr).Msg("failed to encrypt the password longer than 72 bytes")
 		_ = render.Render(w, r, apiutils.BadRequest("invalid password size"))
+		return
 	}
+
+	log.Info().Msgf("hashed passcode: %s", hashedPassword)
 
 	authInitErr := grantOauth.AuthInit(ctx, grantType, db.UpsertUserParams{
 		FullName:          user.FullName,
@@ -152,6 +156,7 @@ func InitGrantOAuth(w http.ResponseWriter, r *http.Request) {
 	if authInitErr != nil {
 		log.Error().Err(authInitErr).Msg("failed to upsert the user details")
 		_ = render.Render(w, r, apiutils.BadRequest("user signup failed"))
+		return
 	}
 
 	render.Status(r, http.StatusCreated)
@@ -167,17 +172,20 @@ func GrantOAuthValidate(w http.ResponseWriter, r *http.Request) {
 	if parseBodyErr := json.NewDecoder(r.Body).Decode(&credentials); parseBodyErr != nil {
 		log.Error().Err(parseBodyErr).Msg("failed to parse the login credentials")
 		_ = render.Render(w, r, apiutils.BadRequest("invalid payload"))
+		return
 	}
 
 	user, authErr := grantOauth.GetUserData(ctx, grantType, credentials.Email)
 	if authErr != nil {
 		log.Error().Err(authErr).Msg("user does not exist")
 		_ = render.Render(w, r, apiutils.Unauthorized("user not found"))
+		return
 	}
 
 	if isValid := hashing.CheckCode(credentials.Password, user.HashedPassword); !isValid {
 		log.Error().Msg("incorrect password")
 		_ = render.Render(w, r, apiutils.Unauthorized("incorrect credentials"))
+		return
 	}
 
 	var userData GrantOAuthValidateResponseBody
@@ -186,6 +194,7 @@ func GrantOAuthValidate(w http.ResponseWriter, r *http.Request) {
 	if err := json.Unmarshal(userResponseByte, &userData); err != nil {
 		log.Error().Err(err).Msg("error parsing the user data to response")
 		_ = render.Render(w, r, apiutils.InternalServerError("failed to fetch the user data"))
+		return
 	}
 
 	render.Status(r, http.StatusOK)
