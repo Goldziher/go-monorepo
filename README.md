@@ -37,7 +37,14 @@ There is a `dockerfile` in the repository root which uses `distroless` as the pr
 1. [sqlc](https://sqlc.dev/).
 2. run `sqlc generate` or any of the other commands in the root.
 
-### Migrations
-In our case `<migration-dir>` is `migrations` folder
-1. run `migrate create -ext sql -dir <migration-dir> -seq <migration-name>` to generate migrations
-2. run `migrate -path <migration-dir> -database <DATABASE_URL> -verbose <up/down>` to apply migrations
+## Migrations
+
+This project uses [goose](https://github.com/pressly/goose) for database migrations.
+- Use the `taskfile` commands to run the database migrations.
+- Make sure to have `DATABASE_URL` in your *.env file.
+
+### TaskFile
+
+There is a `Taskfile.yaml` file, which is a task runner. This project uses [go-task](https://taskfile.dev/) for running task, and it's pretty simple to use.
+- For installation of `taskfile` use [these instructions](https://taskfile.dev/installation/).
+- For running the tasks run: `task <task-name>`, ex: `task greet`

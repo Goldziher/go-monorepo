@@ -1,3 +1,7 @@
+-- +goose Up
+-- +goose StatementBegin
+SELECT 'up SQL query';
+-- +goose StatementEnd
 CREATE TABLE "user"
 (
     id                  uuid PRIMARY KEY      DEFAULT gen_random_uuid(),
@@ -9,3 +13,9 @@ CREATE TABLE "user"
     hashed_password     text         NOT NULL,
     created_at          TIMESTAMPTZ  NOT NULL DEFAULT NOW()
 );
+
+-- +goose Down
+-- +goose StatementBegin
+SELECT 'down SQL query';
+-- +goose StatementEnd
+DROP TABLE "user";
