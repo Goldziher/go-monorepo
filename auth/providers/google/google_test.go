@@ -2,9 +2,10 @@ package google_test
 
 import (
 	"context"
+	"testing"
+
 	"github.com/Goldziher/go-monorepo/auth/providers/google"
 	"github.com/stretchr/testify/assert"
-	"testing"
 )
 
 func TestGetConfig(t *testing.T) {

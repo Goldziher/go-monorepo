@@ -3,6 +3,7 @@ package providers
 import (
 	"context"
 	"fmt"
+
 	"github.com/Goldziher/go-monorepo/auth/constants"
 	"github.com/Goldziher/go-monorepo/auth/providers/github"
 	"github.com/Goldziher/go-monorepo/auth/providers/google"

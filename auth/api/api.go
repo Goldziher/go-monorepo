@@ -4,12 +4,13 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"net/http"
+	"time"
+
 	grantOauth "github.com/Goldziher/go-monorepo/auth/grant-oauth"
 	"github.com/Goldziher/go-monorepo/db"
 	"github.com/Goldziher/go-monorepo/lib/cache"
 	"github.com/Goldziher/go-monorepo/lib/hashing"
-	"net/http"
-	"time"
 
 	"github.com/Goldziher/go-monorepo/auth/providers"
 	"github.com/Goldziher/go-monorepo/auth/utils"

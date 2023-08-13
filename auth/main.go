@@ -3,12 +3,13 @@ package main
 import (
 	"context"
 	"fmt"
-	"github.com/Goldziher/go-monorepo/auth/config"
-	"github.com/Goldziher/go-monorepo/db"
 	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
+
+	"github.com/Goldziher/go-monorepo/auth/config"
+	"github.com/Goldziher/go-monorepo/db"
 
 	"github.com/Goldziher/go-monorepo/auth/api"
 

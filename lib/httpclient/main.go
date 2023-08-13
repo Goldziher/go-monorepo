@@ -5,10 +5,11 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/Goldziher/go-monorepo/lib/apiutils"
 	"io"
 	"net/http"
 	"time"
+
+	"github.com/Goldziher/go-monorepo/lib/apiutils"
 )
 
 type Client struct {

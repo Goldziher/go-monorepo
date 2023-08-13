@@ -3,6 +3,7 @@ package grant_oauth
 import (
 	"context"
 	"fmt"
+
 	"github.com/Goldziher/go-monorepo/auth/constants"
 	"github.com/Goldziher/go-monorepo/auth/grant-oauth/password"
 	"github.com/Goldziher/go-monorepo/db"

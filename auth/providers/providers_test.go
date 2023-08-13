@@ -2,10 +2,11 @@ package providers_test
 
 import (
 	"context"
+	"testing"
+
 	"github.com/Goldziher/go-monorepo/auth/constants"
 	"github.com/Goldziher/go-monorepo/auth/providers"
 	"github.com/stretchr/testify/assert"
-	"testing"
 )
 
 func TestGetProvider(t *testing.T) {

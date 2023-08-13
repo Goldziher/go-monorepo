@@ -2,9 +2,10 @@ package github_test
 
 import (
 	"context"
+	"testing"
+
 	"github.com/Goldziher/go-monorepo/auth/providers/github"
 	"github.com/stretchr/testify/assert"
-	"testing"
 )
 
 func TestGetConfig(t *testing.T) {
