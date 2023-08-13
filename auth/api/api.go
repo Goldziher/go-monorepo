@@ -130,6 +130,7 @@ func InitGrantOAuth(w http.ResponseWriter, r *http.Request) {
 	defer cancel()
 
 	grantType := chi.URLParam(r, "grant")
+
 	var user GrantOAuthUserRequestBody
 	if parseBodyErr := json.NewDecoder(r.Body).Decode(&user); parseBodyErr != nil {
 		log.Error().Err(parseBodyErr).Msg("failed to parse the request payload")
@@ -143,8 +144,6 @@ func InitGrantOAuth(w http.ResponseWriter, r *http.Request) {
 		_ = render.Render(w, r, apiutils.BadRequest("invalid password size"))
 		return
 	}
-
-	log.Info().Msgf("hashed passcode: %s", hashedPassword)
 
 	authInitErr := grantOauth.AuthInit(ctx, grantType, db.UpsertUserParams{
 		FullName:          user.FullName,
@@ -190,8 +189,8 @@ func GrantOAuthValidate(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var userData GrantOAuthValidateResponseBody
-	userResponseByte, _ := json.Marshal(user)
 
+	userResponseByte, _ := json.Marshal(user)
 	if err := json.Unmarshal(userResponseByte, &userData); err != nil {
 		log.Error().Err(err).Msg("error parsing the user data to response")
 		_ = render.Render(w, r, apiutils.InternalServerError("failed to fetch the user data"))
