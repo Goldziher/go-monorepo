@@ -7,6 +7,7 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
+	"time"
 
 	"github.com/Goldziher/go-monorepo/auth/config"
 	"github.com/Goldziher/go-monorepo/db"
@@ -48,8 +49,9 @@ func main() {
 	api.RegisterRoutes(mux)
 
 	httpServer := &http.Server{
-		Addr:    fmt.Sprintf(":%d", cfg.Port),
-		Handler: mux,
+		Addr:              fmt.Sprintf(":%d", cfg.Port),
+		Handler:           mux,
+		ReadHeaderTimeout: time.Second,
 	}
 
 	g, gCtx := errgroup.WithContext(ctx)

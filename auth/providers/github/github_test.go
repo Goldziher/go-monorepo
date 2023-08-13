@@ -14,6 +14,7 @@ func TestGetConfig(t *testing.T) {
 	t.Setenv("BASE_URL", "http://localhost:3000")
 	t.Setenv("GITHUB_CLIENT_ID", "githubClientId")
 	t.Setenv("GITHUB_CLIENT_SECRET", "githubClientSecret")
+	t.Setenv("DATABASE_URL", "postgresql://monorepo:monorepo@0.0.0.0:5432/monorepo?sslmode=disable")
 
 	config, err := github.GetConfig(context.TODO())
 

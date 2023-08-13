@@ -10,6 +10,8 @@ import (
 )
 
 func TestGetProvider(t *testing.T) {
+	t.Setenv("DATABASE_URL", "postgresql://monorepo:monorepo@0.0.0.0:5432/monorepo?sslmode=disable")
+
 	for _, testCase := range []struct {
 		Provider    string
 		ExpectError bool

@@ -14,6 +14,7 @@ func TestGetConfig(t *testing.T) {
 	t.Setenv("GOOGLE_CLIENT_ID", "googleClientId")
 	t.Setenv("GOOGLE_CLIENT_SECRET", "googleClientSecret")
 	t.Setenv("PORT", "3000")
+	t.Setenv("DATABASE_URL", "postgresql://monorepo:monorepo@0.0.0.0:5432/monorepo?sslmode=disable")
 
 	config, err := google.GetConfig(context.TODO())
 
