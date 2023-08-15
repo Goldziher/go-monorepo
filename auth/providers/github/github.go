@@ -3,12 +3,13 @@ package github
 import (
 	"context"
 	"fmt"
+	"sync"
+
 	"github.com/Goldziher/go-monorepo/auth/config"
 	"github.com/Goldziher/go-monorepo/auth/constants"
 	"github.com/Goldziher/go-monorepo/auth/types"
 	"github.com/Goldziher/go-monorepo/lib/apiutils"
 	"github.com/rs/zerolog/log"
-	"sync"
 
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/endpoints"

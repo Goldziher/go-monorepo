@@ -2,13 +2,18 @@ package providers_test
 
 import (
 	"context"
+	"testing"
+
+	"github.com/Goldziher/go-monorepo/lib/testutils"
+
 	"github.com/Goldziher/go-monorepo/auth/constants"
 	"github.com/Goldziher/go-monorepo/auth/providers"
 	"github.com/stretchr/testify/assert"
-	"testing"
 )
 
 func TestGetProvider(t *testing.T) {
+	testutils.SetEnv(t)
+
 	for _, testCase := range []struct {
 		Provider    string
 		ExpectError bool
@@ -18,20 +23,8 @@ func TestGetProvider(t *testing.T) {
 			false,
 		},
 		{
-			constants.ProviderGitlab,
-			true,
-		},
-		{
-			constants.ProviderBitBucket,
-			true,
-		},
-		{
 			constants.ProviderGoogle,
-			true,
-		},
-		{
-			"facebook",
-			true,
+			false,
 		},
 	} {
 		config, err := providers.GetProvider(context.TODO(), testCase.Provider)

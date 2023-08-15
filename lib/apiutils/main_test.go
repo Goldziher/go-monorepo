@@ -32,6 +32,10 @@ func TestApiError(t *testing.T) {
 			ApiErrType:     apiutils.InternalServerError("err"),
 			ExpectedStatus: http.StatusInternalServerError,
 		},
+		{
+			ApiErrType:     apiutils.ServiceUnavailable("err"),
+			ExpectedStatus: http.StatusServiceUnavailable,
+		},
 	} {
 		client := testutils.CreateTestClient(t, http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
 			_ = render.Render(writer, request, testCase.ApiErrType)

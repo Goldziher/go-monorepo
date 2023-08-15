@@ -40,6 +40,10 @@ func InternalServerError(message string) render.Renderer {
 	return NewApiError(message, http.StatusInternalServerError)
 }
 
+func ServiceUnavailable(message string) render.Renderer {
+	return NewApiError(message, http.StatusServiceUnavailable)
+}
+
 func ReadResponseBody(response *http.Response) ([]byte, error) {
 	defer func() {
 		_ = response.Body.Close()

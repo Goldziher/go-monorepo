@@ -3,11 +3,14 @@ package main
 import (
 	"context"
 	"fmt"
-	"github.com/Goldziher/go-monorepo/auth/config"
 	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
+	"time"
+
+	"github.com/Goldziher/go-monorepo/auth/config"
+	"github.com/Goldziher/go-monorepo/db"
 
 	"github.com/Goldziher/go-monorepo/auth/api"
 
@@ -34,6 +37,11 @@ func main() {
 		log.Fatal().Err(configParseErr).Msg("failed to parse config, terminating")
 	}
 
+	dbConn := db.CreateConnection(ctx, cfg.DatabaseUrl)
+	defer func() {
+		_ = dbConn.Close(ctx)
+	}()
+
 	logging.Configure(cfg.Environment != "production")
 
 	mux := router.Create("auth-service")
@@ -41,8 +49,9 @@ func main() {
 	api.RegisterRoutes(mux)
 
 	httpServer := &http.Server{
-		Addr:    fmt.Sprintf(":%d", cfg.Port),
-		Handler: mux,
+		Addr:              fmt.Sprintf(":%d", cfg.Port),
+		Handler:           mux,
+		ReadHeaderTimeout: time.Second,
 	}
 
 	g, gCtx := errgroup.WithContext(ctx)

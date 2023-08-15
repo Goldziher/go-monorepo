@@ -1,10 +1,16 @@
 package api
 
 import (
+	"context"
+	"encoding/json"
 	"fmt"
-	"github.com/Goldziher/go-monorepo/lib/cache"
 	"net/http"
 	"time"
+
+	grantOauth "github.com/Goldziher/go-monorepo/auth/grant-oauth"
+	"github.com/Goldziher/go-monorepo/db"
+	"github.com/Goldziher/go-monorepo/lib/cache"
+	"github.com/Goldziher/go-monorepo/lib/hashing"
 
 	"github.com/Goldziher/go-monorepo/auth/providers"
 	"github.com/Goldziher/go-monorepo/auth/utils"
@@ -22,9 +28,33 @@ type OAuthInitResponseBody struct {
 	RedirectUrl string `json:"redirectUrl"`
 }
 
+type GrantOAuthUserRequestBody struct {
+	FullName          string `json:"full_name"`
+	Email             string `json:"email"`
+	PhoneNumber       string `json:"phone_number"`
+	ProfilePictureUrl string `json:"profile_picture_url,omitempty"`
+	Username          string `json:"username"`
+	Password          string `json:"password"`
+}
+
+type GrantOAuthValidateRequestBody struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
+
+type GrantOAuthValidateResponseBody struct {
+	FullName          string `json:"full_name"`
+	Email             string `json:"email"`
+	PhoneNumber       string `json:"phone_number"`
+	ProfilePictureUrl string `json:"profile_picture_url"`
+	Username          string `json:"username"`
+}
+
 const (
-	InitAuthPath      = "/oauth/{provider}/init"
-	OAuthCallbackPath = "/oauth/{provider}/callback"
+	InitAuthPath           = "/oauth/{provider}/init"
+	OAuthCallbackPath      = "/oauth/{provider}/callback"
+	OAuthGrantInitPath     = "/oauth/grant/{grant}/init"
+	OAuthGrantValidatePath = "/oauth/grant/{grant}/validate"
 )
 
 func InitOAuth(w http.ResponseWriter, r *http.Request) {
@@ -95,7 +125,85 @@ func OAuthCallback(w http.ResponseWriter, r *http.Request) {
 	render.JSON(w, r, userData)
 }
 
+func InitGrantOAuth(w http.ResponseWriter, r *http.Request) {
+	ctx, cancel := context.WithCancel(r.Context())
+	defer cancel()
+
+	grantType := chi.URLParam(r, "grant")
+
+	var user GrantOAuthUserRequestBody
+	if parseBodyErr := json.NewDecoder(r.Body).Decode(&user); parseBodyErr != nil {
+		log.Error().Err(parseBodyErr).Msg("failed to parse the request payload")
+		_ = render.Render(w, r, apiutils.BadRequest("invalid payload"))
+		return
+	}
+
+	hashedPassword, hashingErr := hashing.Hash(user.Password)
+	if hashingErr != nil {
+		log.Error().Err(hashingErr).Msg("failed to encrypt the password longer than 72 bytes")
+		_ = render.Render(w, r, apiutils.BadRequest("invalid password size"))
+		return
+	}
+
+	authInitErr := grantOauth.AuthInit(ctx, grantType, db.GetQueries(), db.UpsertUserParams{
+		FullName:          user.FullName,
+		Email:             user.Email,
+		PhoneNumber:       user.PhoneNumber,
+		ProfilePictureUrl: user.ProfilePictureUrl,
+		Username:          user.Username,
+		HashedPassword:    hashedPassword,
+	})
+	if authInitErr != nil {
+		log.Error().Err(authInitErr).Msg("failed to upsert the user details")
+		_ = render.Render(w, r, apiutils.BadRequest("user signup failed"))
+		return
+	}
+
+	render.Status(r, http.StatusCreated)
+	render.JSON(w, r, user.Email)
+}
+
+func GrantOAuthValidate(w http.ResponseWriter, r *http.Request) {
+	ctx, cancel := context.WithCancel(r.Context())
+	defer cancel()
+
+	grantType := chi.URLParam(r, "grant")
+	var credentials GrantOAuthValidateRequestBody
+	if parseBodyErr := json.NewDecoder(r.Body).Decode(&credentials); parseBodyErr != nil {
+		log.Error().Err(parseBodyErr).Msg("failed to parse the login credentials")
+		_ = render.Render(w, r, apiutils.BadRequest("invalid payload"))
+		return
+	}
+
+	user, authErr := grantOauth.GetUserData(ctx, grantType, db.GetQueries(), credentials.Email)
+	if authErr != nil {
+		log.Error().Err(authErr).Msg("user does not exist")
+		_ = render.Render(w, r, apiutils.Unauthorized("user not found"))
+		return
+	}
+
+	if isValid := hashing.CheckCode(credentials.Password, user.HashedPassword); !isValid {
+		log.Error().Msg("incorrect password")
+		_ = render.Render(w, r, apiutils.Unauthorized("incorrect credentials"))
+		return
+	}
+
+	var userData GrantOAuthValidateResponseBody
+
+	userResponseByte, _ := json.Marshal(user)
+	if err := json.Unmarshal(userResponseByte, &userData); err != nil {
+		log.Error().Err(err).Msg("error parsing the user data to response")
+		_ = render.Render(w, r, apiutils.InternalServerError("failed to fetch the user data"))
+		return
+	}
+
+	render.Status(r, http.StatusOK)
+	render.JSON(w, r, userData)
+}
+
 func RegisterRoutes(router chi.Router) {
 	router.Get(InitAuthPath, InitOAuth)
 	router.Get(OAuthCallbackPath, OAuthCallback)
+	router.Post(OAuthGrantInitPath, InitGrantOAuth)
+	router.Post(OAuthGrantValidatePath, GrantOAuthValidate)
 }

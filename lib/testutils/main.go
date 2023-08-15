@@ -20,3 +20,14 @@ func CreateTestClient(t *testing.T, handler http.Handler) httpclient.Client {
 
 	return httpclient.New(server.URL, server.Client())
 }
+
+func SetEnv(t *testing.T) {
+	t.Setenv("PORT", "3000")
+	t.Setenv("ENVIRONMENT", "development")
+	t.Setenv("BASE_URL", "http://localhost")
+	t.Setenv("GITHUB_CLIENT_ID", "githubClientId")
+	t.Setenv("GITHUB_CLIENT_SECRET", "githubClientSecret")
+	t.Setenv("GOOGLE_CLIENT_ID", "googleClientId")
+	t.Setenv("GOOGLE_CLIENT_SECRET", "googleClientSecret")
+	t.Setenv("DATABASE_URL", "postgresql://monorepo:monorepo@0.0.0.0:5432/monorepo?sslmode=disable")
+}

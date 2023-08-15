@@ -4,6 +4,8 @@ import (
 	"context"
 	"testing"
 
+	"github.com/Goldziher/go-monorepo/lib/testutils"
+
 	"github.com/Goldziher/go-monorepo/auth/config"
 
 	"github.com/stretchr/testify/assert"
@@ -11,13 +13,7 @@ import (
 
 func TestConfigGet(t *testing.T) {
 	t.Run("successfully parses config", func(t *testing.T) {
-		t.Setenv("PORT", "3000")
-		t.Setenv("ENVIRONMENT", "development")
-		t.Setenv("BASE_URL", "http://localhost")
-		t.Setenv("GITHUB_CLIENT_ID", "githubClientId")
-		t.Setenv("GITHUB_CLIENT_SECRET", "githubClientSecret")
-		t.Setenv("GOOGLE_CLIENT_ID", "googleClientId")
-		t.Setenv("GOOGLE_CLIENT_SECRET", "googleClientSecret")
+		testutils.SetEnv(t)
 
 		cfg, err := config.Get(context.TODO())
 		assert.Nil(t, err)
@@ -28,5 +24,6 @@ func TestConfigGet(t *testing.T) {
 		assert.Equal(t, cfg.GithubClientSecret, "githubClientSecret")
 		assert.Equal(t, cfg.GoogleClientId, "googleClientId")
 		assert.Equal(t, cfg.GoogleClientSecret, "googleClientSecret")
+		assert.Equal(t, cfg.DatabaseUrl, "postgresql://monorepo:monorepo@0.0.0.0:5432/monorepo?sslmode=disable")
 	})
 }

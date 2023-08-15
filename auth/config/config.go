@@ -8,13 +8,14 @@ import (
 )
 
 type Config struct {
-	Port               int    `env:"PORT"`
-	Environment        string `env:"ENVIRONMENT"`
-	BaseUrl            string `env:"BASE_URL"`
-	GithubClientId     string `env:"GITHUB_CLIENT_ID"`
-	GithubClientSecret string `env:"GITHUB_CLIENT_SECRET"`
-	GoogleClientId     string `env:"GOOGLE_CLIENT_ID"`
-	GoogleClientSecret string `env:"GOOGLE_CLIENT_SECRET"`
+	Port               int    `env:"PORT,required"`
+	Environment        string `env:"ENVIRONMENT,required"`
+	BaseUrl            string `env:"BASE_URL,required"`
+	GithubClientId     string `env:"GITHUB_CLIENT_ID,required"`
+	GithubClientSecret string `env:"GITHUB_CLIENT_SECRET,required"`
+	GoogleClientId     string `env:"GOOGLE_CLIENT_ID,required"`
+	GoogleClientSecret string `env:"GOOGLE_CLIENT_SECRET,required"`
+	DatabaseUrl        string `env:"DATABASE_URL,required"`
 }
 
 var (
