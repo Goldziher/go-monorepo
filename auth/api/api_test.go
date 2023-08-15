@@ -22,6 +22,8 @@ func createClient(t *testing.T) httpclient.Client {
 }
 
 func TestInitOAuth(t *testing.T) {
+	testutils.SetEnv(t)
+
 	client := createClient(t)
 	url := strings.ReplaceAll(api.InitAuthPath, "{provider}", "github")
 	res, err := client.Get(context.TODO(), url)

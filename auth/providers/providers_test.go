@@ -2,6 +2,7 @@ package providers_test
 
 import (
 	"context"
+	"github.com/Goldziher/go-monorepo/lib/testutils"
 	"testing"
 
 	"github.com/Goldziher/go-monorepo/auth/constants"
@@ -10,7 +11,7 @@ import (
 )
 
 func TestGetProvider(t *testing.T) {
-	t.Setenv("DATABASE_URL", "postgresql://monorepo:monorepo@0.0.0.0:5432/monorepo?sslmode=disable")
+	testutils.SetEnv(t)
 
 	for _, testCase := range []struct {
 		Provider    string

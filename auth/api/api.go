@@ -145,7 +145,7 @@ func InitGrantOAuth(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	authInitErr := grantOauth.AuthInit(ctx, grantType, db.UpsertUserParams{
+	authInitErr := grantOauth.AuthInit(ctx, grantType, db.GetQueries(), db.UpsertUserParams{
 		FullName:          user.FullName,
 		Email:             user.Email,
 		PhoneNumber:       user.PhoneNumber,
@@ -175,7 +175,7 @@ func GrantOAuthValidate(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	user, authErr := grantOauth.GetUserData(ctx, grantType, credentials.Email)
+	user, authErr := grantOauth.GetUserData(ctx, grantType, db.GetQueries(), credentials.Email)
 	if authErr != nil {
 		log.Error().Err(authErr).Msg("user does not exist")
 		_ = render.Render(w, r, apiutils.Unauthorized("user not found"))
