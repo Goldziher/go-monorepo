@@ -2,8 +2,9 @@ package github_test
 
 import (
 	"context"
-	"github.com/Goldziher/go-monorepo/lib/testutils"
 	"testing"
+
+	"github.com/Goldziher/go-monorepo/lib/testutils"
 
 	"github.com/Goldziher/go-monorepo/auth/providers/github"
 	"github.com/stretchr/testify/assert"

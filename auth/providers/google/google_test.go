@@ -2,8 +2,9 @@ package google_test
 
 import (
 	"context"
-	"github.com/Goldziher/go-monorepo/lib/testutils"
 	"testing"
+
+	"github.com/Goldziher/go-monorepo/lib/testutils"
 
 	"github.com/Goldziher/go-monorepo/auth/providers/google"
 	"github.com/stretchr/testify/assert"

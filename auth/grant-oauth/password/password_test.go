@@ -2,9 +2,10 @@ package password_test
 
 import (
 	"context"
-	"github.com/Goldziher/go-monorepo/lib/mocks"
-	"github.com/Goldziher/go-monorepo/lib/testutils"
+	"github.com/Goldziher/go-monorepo/db/mocks"
 	"testing"
+
+	"github.com/Goldziher/go-monorepo/lib/testutils"
 
 	"github.com/Goldziher/go-monorepo/auth/grant-oauth/password"
 	"github.com/Goldziher/go-monorepo/db"
