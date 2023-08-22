@@ -26,6 +26,10 @@ func TestGetProvider(t *testing.T) {
 			constants.ProviderGoogle,
 			false,
 		},
+		{
+			constants.ProviderMicrosoft,
+			false,
+		},
 	} {
 		config, err := providers.GetProvider(context.TODO(), testCase.Provider)
 		if testCase.ExpectError {

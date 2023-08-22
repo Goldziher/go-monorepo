@@ -30,4 +30,6 @@ func SetEnv(t *testing.T) {
 	t.Setenv("GOOGLE_CLIENT_ID", "googleClientId")
 	t.Setenv("GOOGLE_CLIENT_SECRET", "googleClientSecret")
 	t.Setenv("DATABASE_URL", "postgresql://monorepo:monorepo@0.0.0.0:5432/monorepo?sslmode=disable")
+	t.Setenv("MICROSOFT_CLIENT_ID", "microsoftClientId")
+	t.Setenv("MICROSOFT_CLIENT_SECRET", "microsoftClientSecret")
 }
