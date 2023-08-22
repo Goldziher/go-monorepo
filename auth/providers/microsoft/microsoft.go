@@ -3,6 +3,8 @@ package microsoft
 import (
 	"context"
 	"fmt"
+	"sync"
+
 	"github.com/Goldziher/go-monorepo/auth/config"
 	"github.com/Goldziher/go-monorepo/auth/constants"
 	"github.com/Goldziher/go-monorepo/auth/types"
@@ -10,7 +12,6 @@ import (
 	"github.com/rs/zerolog/log"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/endpoints"
-	"sync"
 )
 
 var (
@@ -51,7 +52,7 @@ func GetConfig(ctx context.Context) (*oauth2.Config, error) {
 func GetUserData(ctx context.Context, token *oauth2.Token) (*types.UserData, error) {
 	client := microsoft.Client(ctx, token)
 
-	response, requestErr := client.Get(fmt.Sprintf("https://graph.microsoft.com/v1.0/me"))
+	response, requestErr := client.Get("https://graph.microsoft.com/v1.0/me")
 	if requestErr != nil {
 		return nil, requestErr
 	}

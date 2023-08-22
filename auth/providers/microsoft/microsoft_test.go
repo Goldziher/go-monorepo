@@ -2,10 +2,11 @@ package microsoft_test
 
 import (
 	"context"
+	"testing"
+
 	"github.com/Goldziher/go-monorepo/auth/providers/microsoft"
 	"github.com/Goldziher/go-monorepo/lib/testutils"
 	"github.com/stretchr/testify/assert"
-	"testing"
 )
 
 func TestGetConfig(t *testing.T) {

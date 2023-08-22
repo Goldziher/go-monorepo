@@ -3,6 +3,7 @@ package providers
 import (
 	"context"
 	"fmt"
+
 	"github.com/Goldziher/go-monorepo/auth/providers/microsoft"
 
 	"github.com/Goldziher/go-monorepo/auth/constants"
