@@ -1,8 +1,9 @@
 package constants
 
 const (
-	ProviderGithub = "github"
-	ProviderGoogle = "google"
+	ProviderGithub    = "github"
+	ProviderGoogle    = "google"
+	ProviderMicrosoft = "microsoft"
 )
 
 const (

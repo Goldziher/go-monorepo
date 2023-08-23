@@ -2,8 +2,9 @@ package grant_oauth_test
 
 import (
 	"context"
-	"github.com/Goldziher/go-monorepo/db/mocks"
 	"testing"
+
+	"github.com/Goldziher/go-monorepo/db/mocks"
 
 	"github.com/Goldziher/go-monorepo/auth/constants"
 	grant_oauth "github.com/Goldziher/go-monorepo/auth/grant-oauth"
