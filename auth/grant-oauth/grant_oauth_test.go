@@ -30,14 +30,19 @@ func TestAuthInit(t *testing.T) {
 			true,
 		},
 	} {
-		err := grant_oauth.AuthInit(context.TODO(), testCase.GrantType, queryInstance, db.UpsertUserParams{
-			FullName:          testutils.TestingFullName,
-			Email:             testutils.TestingEmail,
-			PhoneNumber:       testutils.TestingPhoneNumber,
-			ProfilePictureUrl: testutils.TestingUrl,
-			Username:          testutils.TestingUsername,
-			HashedPassword:    testutils.TestingPassword,
-		})
+		err := grant_oauth.AuthInit(
+			context.TODO(),
+			testCase.GrantType,
+			queryInstance,
+			db.UpsertUserParams{
+				FullName:          testutils.TestingFullName,
+				Email:             testutils.TestingEmail,
+				PhoneNumber:       testutils.TestingPhoneNumber,
+				ProfilePictureUrl: testutils.TestingUrl,
+				Username:          testutils.TestingUsername,
+				HashedPassword:    testutils.TestingPassword,
+			},
+		)
 		if testCase.ExpectError {
 			assert.NotNil(t, err)
 		} else {
@@ -63,7 +68,12 @@ func TestGetUserData(t *testing.T) {
 			true,
 		},
 	} {
-		user, err := grant_oauth.GetUserData(context.TODO(), testCase.GrantType, queryInstance, testutils.TestingEmail)
+		user, err := grant_oauth.GetUserData(
+			context.TODO(),
+			testCase.GrantType,
+			queryInstance,
+			testutils.TestingEmail,
+		)
 		if testCase.ExpectError {
 			assert.NotNil(t, err)
 			assert.Empty(t, user)

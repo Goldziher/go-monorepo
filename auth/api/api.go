@@ -62,8 +62,15 @@ func InitOAuth(w http.ResponseWriter, r *http.Request) {
 
 	conf, providerErr := providers.GetProvider(r.Context(), provider)
 	if providerErr != nil {
-		log.Error().Err(providerErr).Str("provider", chi.URLParam(r, "provider")).Msg("unrecognized provider requested")
-		_ = render.Render(w, r, apiutils.BadRequest(fmt.Sprintf("unsupported provider %v", provider)))
+		log.Error().
+			Err(providerErr).
+			Str("provider", chi.URLParam(r, "provider")).
+			Msg("unrecognized provider requested")
+		_ = render.Render(
+			w,
+			r,
+			apiutils.BadRequest(fmt.Sprintf("unsupported provider %v", provider)),
+		)
 		return
 	}
 	log.Info().Str("redirect-url", conf.RedirectURL).Msg("using redirect-url")
@@ -84,14 +91,25 @@ func OAuthCallback(w http.ResponseWriter, r *http.Request) {
 	provider := chi.URLParam(r, "provider")
 	conf, providerErr := providers.GetProvider(r.Context(), provider)
 	if providerErr != nil {
-		log.Error().Err(providerErr).Str("provider", chi.URLParam(r, "provider")).Msg("unrecognized provider requested")
-		_ = render.Render(w, r, apiutils.BadRequest(fmt.Sprintf("unsupported provider %v", provider)))
+		log.Error().
+			Err(providerErr).
+			Str("provider", chi.URLParam(r, "provider")).
+			Msg("unrecognized provider requested")
+		_ = render.Render(
+			w,
+			r,
+			apiutils.BadRequest(fmt.Sprintf("unsupported provider %v", provider)),
+		)
 		return
 	}
 
 	state, code := r.FormValue("state"), r.FormValue("code")
 
-	log.Debug().Str("state", state).Str("code", code).Str("provider", provider).Msg("received oauth callback")
+	log.Debug().
+		Str("state", state).
+		Str("code", code).
+		Str("provider", provider).
+		Msg("received oauth callback")
 
 	defer func() {
 		_ = cache.Get().Del(r.Context(), state)

@@ -57,17 +57,21 @@ func (p PgxRowsMock) Conn() *pgx.Conn {
 
 type QueryMock struct{}
 
-func (q *QueryMock) QueryRow(ctx context.Context, s string, i ...interface{}) pgx.Row {
+func (*QueryMock) QueryRow(_ context.Context, s string, i ...any) pgx.Row {
 	fmt.Printf("Query: %s \nArgs: %+v", s, i)
 	return PgxRowMock{}
 }
 
-func (q *QueryMock) Exec(ctx context.Context, s string, i ...interface{}) (pgconn.CommandTag, error) {
+func (*QueryMock) Exec(
+	_ context.Context,
+	s string,
+	i ...any,
+) (pgconn.CommandTag, error) {
 	fmt.Printf("Query: %s \nArgs: %+v", s, i)
 	return pgconn.CommandTag{}, nil
 }
 
-func (q *QueryMock) Query(ctx context.Context, s string, i ...interface{}) (pgx.Rows, error) {
+func (*QueryMock) Query(_ context.Context, s string, i ...any) (pgx.Rows, error) {
 	fmt.Printf("Query: %s; \nArgs: %+v", s, i)
 	return PgxRowsMock{}, nil
 }

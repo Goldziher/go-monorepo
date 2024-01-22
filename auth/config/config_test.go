@@ -24,7 +24,11 @@ func TestConfigGet(t *testing.T) {
 		assert.Equal(t, cfg.GithubClientSecret, "githubClientSecret")
 		assert.Equal(t, cfg.GoogleClientId, "googleClientId")
 		assert.Equal(t, cfg.GoogleClientSecret, "googleClientSecret")
-		assert.Equal(t, cfg.DatabaseUrl, "postgresql://monorepo:monorepo@0.0.0.0:5432/monorepo?sslmode=disable")
+		assert.Equal(
+			t,
+			cfg.DatabaseUrl,
+			"postgresql://monorepo:monorepo@0.0.0.0:5432/monorepo?sslmode=disable",
+		)
 		assert.Equal(t, cfg.MicrosoftClientId, "microsoftClientId")
 		assert.Equal(t, cfg.MicrosoftClientSecret, "microsoftClientSecret")
 	})

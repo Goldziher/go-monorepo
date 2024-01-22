@@ -63,7 +63,9 @@ func GetUserData(ctx context.Context, token *oauth2.Token) (*types.UserData, err
 	if deserializationError != nil {
 		return nil, deserializationError
 	}
-	log.Debug().Interface("microsoft user data", microsoftUserData).Msg("user data received from microsoft")
+	log.Debug().
+		Interface("microsoft user data", microsoftUserData).
+		Msg("user data received from microsoft")
 
 	return &types.UserData{
 		Provider: constants.ProviderMicrosoft,

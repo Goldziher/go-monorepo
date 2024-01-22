@@ -26,7 +26,11 @@ func GetProvider(ctx context.Context, providerName string) (*oauth2.Config, erro
 	}
 }
 
-func GetUserData(ctx context.Context, token *oauth2.Token, providerName string) (*types.UserData, error) {
+func GetUserData(
+	ctx context.Context,
+	token *oauth2.Token,
+	providerName string,
+) (*types.UserData, error) {
 	switch providerName {
 	case constants.ProviderGithub:
 		return github.GetUserData(ctx, token)

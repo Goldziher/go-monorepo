@@ -21,7 +21,11 @@ func (e *ApiError) Render(w http.ResponseWriter, r *http.Request) error {
 }
 
 func NewApiError(message string, statusCode int) render.Renderer {
-	return &ApiError{StatusCode: statusCode, Message: message, StatusText: http.StatusText(statusCode)}
+	return &ApiError{
+		StatusCode: statusCode,
+		Message:    message,
+		StatusText: http.StatusText(statusCode),
+	}
 }
 
 func BadRequest(message string) render.Renderer {

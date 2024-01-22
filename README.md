@@ -40,11 +40,13 @@ There is a `dockerfile` in the repository root which uses `distroless` as the pr
 ## Migrations
 
 This project uses [goose](https://github.com/pressly/goose) for database migrations.
+
 - Use the `taskfile` commands to run the database migrations.
-- Make sure to have `DATABASE_URL` in your *.env file.
+- Make sure to have `DATABASE_URL` in your \*.env file.
 
 ### TaskFile
 
 There is a `Taskfile.yaml` file, which is a task runner. This project uses [go-task](https://taskfile.dev/) for running task, and it's pretty simple to use.
+
 - For installation of `taskfile` use [these instructions](https://taskfile.dev/installation/).
 - For running the tasks run: `task <task-name>`, ex: `task greet`

@@ -37,9 +37,12 @@ func TestApiError(t *testing.T) {
 			ExpectedStatus: http.StatusServiceUnavailable,
 		},
 	} {
-		client := testutils.CreateTestClient(t, http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
-			_ = render.Render(writer, request, testCase.ApiErrType)
-		}))
+		client := testutils.CreateTestClient(
+			t,
+			http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
+				_ = render.Render(writer, request, testCase.ApiErrType)
+			}),
+		)
 		res, err := client.Get(context.TODO(), "/")
 		assert.Nil(t, err)
 		assert.Equal(t, res.StatusCode, testCase.ExpectedStatus)

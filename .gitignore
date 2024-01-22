@@ -8,3 +8,4 @@
 .env
 .idea
 go.work
+node_modules/

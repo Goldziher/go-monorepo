@@ -1,10 +1,10 @@
-version: '3'
+version: "3"
 
 env:
-  MIGRATION_DIR: migrations
+  MIGRATION_DIR: sql/migrations
   DATABASE_DRIVER: postgres
 
-dotenv: ['.env']
+dotenv: [".env"]
 
 tasks:
   greet:
@@ -12,11 +12,11 @@ tasks:
       - echo "Hey fella! Welcome and enjoy working with the go-monorepo 😎"
 
   goose-up:
-    dir: '{{.MIGRATION_DIR}}'
+    dir: "{{.MIGRATION_DIR}}"
     cmds:
       - goose $DATABASE_DRIVER $DATABASE_URL up
 
   goose-down:
-    dir: '{{.MIGRATION_DIR}}'
+    dir: "{{.MIGRATION_DIR}}"
     cmds:
       - goose $DATABASE_DRIVER $DATABASE_URL down
