@@ -51,7 +51,7 @@ jobs:
       - name: Install dependencies
         run: go get ./...
       - name: golangci-lint
-        uses: golangci/golangci-lint-action@v3
+        uses: golangci/golangci-lint-action@v4
         with:
           version: v1.53
   test:
