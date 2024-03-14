@@ -8,7 +8,7 @@ require (
 	github.com/go-chi/chi/v5 v5.0.11
 	github.com/go-chi/httplog v0.3.2
 	github.com/go-chi/render v1.0.3
-	github.com/jackc/pgx/v5 v5.5.2
+	github.com/jackc/pgx/v5 v5.5.4
 	github.com/redis/go-redis/v9 v9.4.0
 	github.com/rs/zerolog v1.31.0
 	github.com/sethvargo/go-envconfig v1.0.0
