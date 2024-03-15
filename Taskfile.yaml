@@ -7,16 +7,35 @@ env:
 dotenv: [".env"]
 
 tasks:
-  greet:
+  update-brew:
     cmds:
-      - echo "Hey fella! Welcome and enjoy working with the go-monorepo 😎"
-
+      - brew update && brew upgrade && brew cleanup || true
+  setup:
+    desc: Setup the project dependencies
+    cmds:
+      - task: update-brew
+      - command -v pre-commit &> /dev/null || brew install pre-commit
+      - command -v gcloud &> /dev/null || curl https://sdk.cloud.google.com | bash
+      - go mod download
+      - pre-commit install && pre-commit install --hook-type commit-msg && pre-commit install-hooks
+  update:
+    desc: Update the project dependencies
+    cmds:
+      - task: update-brew
+      - go mod tidy && go get -u ./...
+      - pre-commit autoupdate
+  lint:
+    desc: Lint the project
+    cmds:
+      - pre-commit run --show-diff-on-failure --color=always --all-files
   goose-up:
+    desc: Run goose migration up
     dir: "{{.MIGRATION_DIR}}"
     cmds:
       - goose $DATABASE_DRIVER $DATABASE_URL up
 
   goose-down:
+    desc: Run goose migration down
     dir: "{{.MIGRATION_DIR}}"
     cmds:
       - goose $DATABASE_DRIVER $DATABASE_URL down
